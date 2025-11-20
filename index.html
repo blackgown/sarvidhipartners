@@ -54,7 +54,40 @@
     </style>
 </head>
 <body class="text-gray-800">
+<div id="legal-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-90 backdrop-blur-sm hidden p-4">
+        <div class="bg-white max-w-3xl w-full p-8 md:p-10 border-4 border-gray-800 shadow-2xl relative">
+            
+            <div class="border-b-2 border-gray-800 pb-4 mb-6 flex items-center gap-4">
+                <i data-lucide="scale" class="w-8 h-8 text-gray-800"></i>
+                <h2 class="text-2xl font-bold uppercase tracking-widest">Disclaimer</h2>
+            </div>
 
+            <div class="font-typewriter text-sm md:text-base text-gray-700 space-y-4 leading-relaxed max-h-[60vh] overflow-y-auto pr-2">
+                <p class="font-bold">The Bar Council of India does not permit soliciting work or advertising by advocates in any manner or form. By clicking on "AGREE" below, the user acknowledges and confirms that:</p>
+                
+                <ul class="list-disc pl-5 space-y-2">
+                    <li>There has been no advertisement, personal communication, solicitation, invitation or inducement of any sort whatsoever from us or any of our members to solicit any work through this website;</li>
+                    <li>The website is a resource solely for the purpose of providing general information about Sarvidhi Partners at the user’s own risk, cost and liability;</li>
+                    <li>The information provided in this website shall not be construed as legal advice or create any lawyer-client relationship in any manner whatsoever;</li>
+                    <li>The links provided on this website shall in no way be considered referrals, endorsements or affiliations with the linked entities and Sarvidhi Partners shall not hold responsibility for the content of such links.</li>
+                    <li>The user shall not hold Sarvidhi Partners responsible for any action taken relying upon the content of the website. In cases where the user has any legal issues and requires assistance, he/she/it must seek independent legal advice.</li>
+                </ul>
+            </div>
+
+            <div class="mt-8 flex flex-col md:flex-row gap-4 pt-6 border-t-2 border-gray-200">
+                <button onclick="acceptDisclaimer()" class="flex-1 bg-green-700 text-white font-bold uppercase tracking-widest py-4 hover:bg-green-800 transition shadow-lg">
+                    I Agree
+                </button>
+                <button onclick="refuseDisclaimer()" class="flex-1 bg-red-700 text-white font-bold uppercase tracking-widest py-4 hover:bg-red-800 transition shadow-lg">
+                    I Refuse
+                </button>
+            </div>
+            
+            <div class="absolute -top-3 -left-3 bg-yellow-200 border border-yellow-400 text-xs font-typewriter px-2 py-1 transform -rotate-6 shadow-md">
+                IMPORTANT NOTICE
+            </div>
+        </div>
+    </div>
     <!-- Navigation: Styled like a corporate header -->
     <nav class="bg-white border-b-4 border-gray-800 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -371,8 +404,39 @@
         btn.addEventListener('click', () => {
             menu.classList.toggle('hidden');
         });
+        // --- Legal Disclaimer Logic ---
+        const modal = document.getElementById('legal-modal');
+
+        // Function to check if user has already agreed in this session
+        function checkDisclaimer() {
+            // We use sessionStorage so the popup appears every time the browser is reopened (Best for Legal Compliance)
+            if (!sessionStorage.getItem('legalDisclaimerAccepted')) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        // Run check immediately
+        checkDisclaimer();
+
+        function acceptDisclaimer() {
+            // Save the acceptance state
+            sessionStorage.setItem('legalDisclaimerAccepted', 'true');
+            // Hide modal
+            modal.classList.add('hidden');
+        }
+
+        function refuseDisclaimer() {
+            // Try to go back to previous page
+            if (document.referrer) {
+                window.location.href = document.referrer;
+            } else {
+                // If opened directly (no history), redirect to Google
+                window.location.href = "https://www.google.com";
+            }
+        }
     </script>
 </body>
 </html>
+
 
 
